@@ -3,7 +3,6 @@ pragma solidity ^0.8.19;
 
 import "openzeppelin-contracts/access/Ownable.sol";
 import "openzeppelin-contracts/utils/Counters.sol";
-import "./Utils.sol";
 import "./RandomnessCeremony.sol";
 
 contract LottoCeremony is Ownable {
@@ -26,8 +25,8 @@ contract LottoCeremony is Ownable {
     }
 
     Counters.Counter private ceremonyCount;
-    mapping(uint ceremonyId => Ceremony) ceremonies;
-    mapping(uint ceremonyId => mapping(uint ticketId => address ticketOwner)) tickets;
+    mapping(uint ceremonyId => Ceremony) public ceremonies;
+    mapping(uint ceremonyId => mapping(uint ticketId => address ticketOwner)) public tickets;
 
     constructor(address randomnessCeremonyAddress) {
         randomnessCeremony = RandomnessCeremony(payable(randomnessCeremonyAddress));

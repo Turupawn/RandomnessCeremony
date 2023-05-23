@@ -20,6 +20,10 @@
   <p>Secret</p>
   <input type="input"  value="" id="_secretReveal"></input>
   <input type="button" value="Reveal" onclick="_reveal()"></input>
+  <h2>Claim</h2>
+  <p>Ceremony Id</p>
+  <input type="input"  value="" id="_ceremonyIdClaim"></input>
+  <input type="button" value="Claim" onclick="_claim()"></input>
   <br>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.5/web3.min.js"></script>
   <script type="text/javascript" src="blockchain_stuff.js"></script>
@@ -30,16 +34,31 @@
   function _commit()
   {
     _ceremonyIdCommit = document.getElementById("_ceremonyIdCommit").value
-    _secretCommit = document.getElementById("_secretCommit").value
-    hashedValue = web3.utils.keccak256(_secretCommit)
+    _secretCommit = web3.utils.asciiToHex(document.getElementById("_secretCommit").value)
+    _secretCommit = _secretCommit.slice(0, 2) + "0".repeat(64-_secretCommit.length) + _secretCommit.slice(2)
+    hashedValue = web3.utils.soliditySha3({ type: 'bytes32', value: _secretCommit})
+
+    console.log(_secretCommit)
+    console.log(hashedValue)
     commit(_ceremonyIdCommit, hashedValue)
   }
 
   function _reveal()
   {
     _ceremonyIdReveal = document.getElementById("_ceremonyIdReveal").value
-    _secretReveal = document.getElementById("_secretReveal").value
-    hashedValue = web3.utils.keccak256(_secretReveal)
+    _secretReveal = web3.utils.asciiToHex(document.getElementById("_secretReveal").value)
+    _secretReveal = _secretReveal.slice(0, 2) + "0".repeat(64-_secretReveal.length) + _secretReveal.slice(2)
+    
+    hashedValue = web3.utils.soliditySha3({ type: 'bytes32', value: _secretReveal})
+
+    console.log(_secretReveal)
+    console.log(hashedValue)
     reveal(_ceremonyIdReveal, hashedValue, _secretReveal)
+  }
+
+  function _claim()
+  {
+    _ceremonyIdClaim = document.getElementById("_ceremonyIdClaim").value
+    claim(_ceremonyIdClaim)
   }
 </script>

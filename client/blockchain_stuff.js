@@ -1,6 +1,6 @@
 const NETWORK_ID = 11155111
 
-const MY_CONTRACT_ADDRESS = "0x76ECf18dB23170b95308465aD4E6e3d44e9C36c6"
+const MY_CONTRACT_ADDRESS = "0xeD5Be65240FCFf389b8ccC1a628673d01F8F2090"
 const MY_CONTRACT_ABI_PATH = "./json_abi/LottoCeremony.json"
 var my_contract
 
@@ -85,7 +85,7 @@ async function loadDapp() {
         };
         awaitContract();
       } else {
-        document.getElementById("web3_message").textContent="Please connect to Rinkeby";
+        document.getElementById("web3_message").textContent="Please connect to Sepolia";
       }
     });
   };
@@ -121,8 +121,13 @@ const onWalletConnectedCallback = async () => {
 //// Functions ////
 
 const commit = async (ceremonyId, hashedValue) => {
+  var ceremony = await my_contract.methods.ceremonies(ceremonyId).call()
+  var ticketPrice = ceremony[3]
+  var stakeAmount = ceremony[4]
+  var valueSent = parseInt(ticketPrice) + parseInt(stakeAmount)
+
   const result = await my_contract.methods.commit(accounts[0], ceremonyId, hashedValue)
-  .send({ from: accounts[0], gas: 0, value: 0 })
+  .send({ from: accounts[0], gas: 0, value: valueSent })
   .on('transactionHash', function(hash){
     document.getElementById("web3_message").textContent="Executing...";
   })
@@ -134,14 +139,40 @@ const commit = async (ceremonyId, hashedValue) => {
 }
 
 const reveal = async (ceremonyId, hashedValue, secretValue) => {
-    const result = await my_contract.methods.commit(ceremonyId, hashedValue, secretValue)
-    .send({ from: accounts[0], gas: 0, value: 0 })
-    .on('transactionHash', function(hash){
-      document.getElementById("web3_message").textContent="Executing...";
-    })
-    .on('receipt', function(receipt){
-      document.getElementById("web3_message").textContent="Success.";    })
-    .catch((revertReason) => {
-      console.log("ERROR! Transaction reverted: " + revertReason.receipt.transactionHash)
-    });
+  const result = await my_contract.methods.reveal(ceremonyId, hashedValue, secretValue)
+  .send({ from: accounts[0], gas: 0, value: 0 })
+  .on('transactionHash', function(hash){
+    document.getElementById("web3_message").textContent="Executing...";
+  })
+  .on('receipt', function(receipt){
+    document.getElementById("web3_message").textContent="Success.";    })
+  .catch((revertReason) => {
+    console.log("ERROR! Transaction reverted: " + revertReason.receipt.transactionHash)
+  });
+}
+
+const createCeremony = async (commitmentDeadline, revealDeadline, ticketPrice, stakeAmount) => {
+  const result = await my_contract.methods.createCeremony(commitmentDeadline, revealDeadline, ticketPrice, stakeAmount)
+  .send({ from: accounts[0], gas: 0, value: 0 })
+  .on('transactionHash', function(hash){
+    document.getElementById("web3_message").textContent="Executing...";
+  })
+  .on('receipt', function(receipt){
+    document.getElementById("web3_message").textContent="Success.";    })
+  .catch((revertReason) => {
+    console.log("ERROR! Transaction reverted: " + revertReason.receipt.transactionHash)
+  });
+}
+
+const claim = async (ceremonyId) => {
+  const result = await my_contract.methods.claim(ceremonyId)
+  .send({ from: accounts[0], gas: 0, value: 0 })
+  .on('transactionHash', function(hash){
+    document.getElementById("web3_message").textContent="Executing...";
+  })
+  .on('receipt', function(receipt){
+    document.getElementById("web3_message").textContent="Success.";    })
+  .catch((revertReason) => {
+    console.log("ERROR! Transaction reverted: " + revertReason.receipt.transactionHash)
+  });
 }

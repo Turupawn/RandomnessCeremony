@@ -2,7 +2,6 @@
 pragma solidity ^0.8.19;
 
 import "openzeppelin-contracts/utils/Counters.sol";
-import "./Utils.sol";
 
 struct Randomness
 {
