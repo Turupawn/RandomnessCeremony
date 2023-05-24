@@ -24,6 +24,26 @@
   <p>Ceremony Id</p>
   <input type="input"  value="" id="_ceremonyIdClaim"></input>
   <input type="button" value="Claim" onclick="_claim()"></input>
+  <h2>Queries</h2>
+  <h3>Get Ceremony</h3>
+  <p>Ceremony Id</p>
+  <input type="input"  value="" id="_ceremonyIdGetCeremony"></input>
+  <input type="button" value="Get Ceremony" onclick="_getCeremony()"></input>
+  <p id="get_ceremony_text"></p>
+  <br>
+  <h3>Get Ticket</h3>
+  <p>Ceremony Id</p>
+  <input type="input"  value="" id="_ceremonyIdGetTicket"></input>
+  <p>Ticket Id</p>
+  <input type="input"  value="" id="_ticketIdGetTicket"></input>
+  <input type="button" value="Get Ticket" onclick="_getTicket()"></input>
+  <p id="get_ticket_text"></p>
+  <br>
+  <h3>Get Winner</h3>
+  <p>Get Winner</p>
+  <input type="input"  value="" id="_ceremonyIdGetWinner"></input>
+  <input type="button" value="Get Winner" onclick="_getWinner()"></input>
+  <p id="get_winner_text"></p>
   <br>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.5/web3.min.js"></script>
   <script type="text/javascript" src="blockchain_stuff.js"></script>
@@ -60,5 +80,24 @@
   {
     _ceremonyIdClaim = document.getElementById("_ceremonyIdClaim").value
     claim(_ceremonyIdClaim)
+  }
+
+  function _getCeremony()
+  {
+    _ceremonyIdGetCeremony = document.getElementById("_ceremonyIdGetCeremony").value
+    getCeremony(_ceremonyIdGetCeremony)
+  }
+
+  function _getTicket()
+  {
+    _ceremonyIdGetTicket = document.getElementById("_ceremonyIdGetTicket").value
+    _ticketIdGetTicket = document.getElementById("_ticketIdGetTicket").value
+    getTicket(_ceremonyIdGetTicket, _ticketIdGetTicket)
+  }
+
+  function _getWinner()
+  {
+    _ceremonyIdGetWinner = document.getElementById("_ceremonyIdGetWinner").value
+    getWinner(_ceremonyIdGetWinner)
   }
 </script>

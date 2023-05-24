@@ -17,7 +17,7 @@ contract RandomnessCeremony {
     using Counters for Counters.Counter;
     enum CommitmentState {NotCommitted, Committed, Revealed, Slashed}
 
-    function sendETH(address payable _to, uint amount) public {
+    function sendETH(address payable _to, uint amount) internal {
         (bool sent, bytes memory data) = _to.call{value: amount}("");
         data;
         require(sent, "Failed to send Ether");
@@ -29,9 +29,9 @@ contract RandomnessCeremony {
         CommitmentState state;
     }
 
-    Counters.Counter private randomnessIds;
+    Counters.Counter public randomnessIds;
     mapping(uint randomnessId => Randomness) public randomness;
-    mapping(uint randomnessId => mapping(bytes32 hashedValue => Commitment commitment)) commitments;
+    mapping(uint randomnessId => mapping(bytes32 hashedValue => Commitment commitment)) public commitments;
 
     constructor() {
     }

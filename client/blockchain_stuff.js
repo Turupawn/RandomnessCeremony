@@ -1,6 +1,6 @@
-const NETWORK_ID = 11155111
+const NETWORK_ID = 534353
 
-const MY_CONTRACT_ADDRESS = "0xeD5Be65240FCFf389b8ccC1a628673d01F8F2090"
+const MY_CONTRACT_ADDRESS = "0x7CC913737c1B6A38C5b7f77Ed85937C306a2bf52"
 const MY_CONTRACT_ABI_PATH = "./json_abi/LottoCeremony.json"
 var my_contract
 
@@ -85,7 +85,7 @@ async function loadDapp() {
         };
         awaitContract();
       } else {
-        document.getElementById("web3_message").textContent="Please connect to Sepolia";
+        document.getElementById("web3_message").textContent="Please connect to Scroll Alpha";
       }
     });
   };
@@ -100,23 +100,55 @@ async function connectWallet() {
 
 loadDapp()
 
-const onContractInitCallback = async () => {
+const onContractInitCallback = async () => {  
+  var ceremonyCount = await my_contract.methods.ceremonyCount().call()
+  document.getElementById("contract_state").textContent = "Ceremony count: " + ceremonyCount
     /*
-  var hello = await my_contract.methods.hello().call()
-  var count = await my_contract.methods.count().call()
   var last_writer = await my_contract.methods.count().call()
 
   var contract_state = "Hello: " + hello
     + ", Count: " + count
     + ", Last Writer: " + last_writer
   
-  document.getElementById("contract_state").textContent = contract_state;
   */
 }
 
 const onWalletConnectedCallback = async () => {
 }
 
+//// Queries ////
+
+async function getCeremony(ceremonyIdGetCeremony)
+{
+  var ceremony = await my_contract.methods.ceremonies(ceremonyIdGetCeremony).call()
+  //var winner = await my_contract.methods.getWinner(ceremonyIdGetCeremony).call()
+  //var getRandomness = await my_contract.methods.getWinner(ceremonyIdGetCeremony).call()
+  isClaimed = ceremony.isClaimed
+  ticketCount = ceremony.ticketCount
+  ticketPrice = ceremony.ticketPrice
+  stakeAmount = ceremony.stakeAmount
+  document.getElementById("get_ceremony_text").textContent = "isClaimed: " + isClaimed
+    + " ticketCount: " + ticketCount
+    + " ticketPrice: " + web3.utils.fromWei(ticketPrice)
+    + " stakeAmount: "+ web3.utils.fromWei(stakeAmount)
+    //+ " winner: "+ winner
+    //+ " getRandomness: "+ getRandomness
+}
+
+async function getTicket(ceremonyIdGetTicket, ticketIdGetTicket)
+{
+  var ticketOwner = await my_contract.methods.tickets(ceremonyIdGetTicket, ticketIdGetTicket).call()
+  document.getElementById("get_ticket_text").textContent = ticketOwner
+}
+
+async function getWinner(ceremonyIdGetWinner)
+{
+  var winner = await my_contract.methods.getWinner(ceremonyIdGetWinner).call()
+  var getRandomness = await my_contract.methods.getRandomness(ceremonyIdGetWinner).call()
+
+  document.getElementById("get_winner_text").textContent = " winner: "+ winner
+    + " getRandomness: "+ getRandomness
+}
 
 //// Functions ////
 

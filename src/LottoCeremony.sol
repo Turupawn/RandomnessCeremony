@@ -8,9 +8,9 @@ import "./RandomnessCeremony.sol";
 contract LottoCeremony is Ownable {
 
     using Counters for Counters.Counter;
-    RandomnessCeremony randomnessCeremony;
+    RandomnessCeremony public randomnessCeremony;
 
-    function sendETH(address payable _to, uint amount) public {
+    function sendETH(address payable _to, uint amount) internal {
         (bool sent, bytes memory data) = _to.call{value: amount}("");
         data;
         require(sent, "Failed to send Ether");
@@ -24,13 +24,15 @@ contract LottoCeremony is Ownable {
         uint stakeAmount;
     }
 
-    Counters.Counter private ceremonyCount;
+    Counters.Counter public ceremonyCount;
     mapping(uint ceremonyId => Ceremony) public ceremonies;
     mapping(uint ceremonyId => mapping(uint ticketId => address ticketOwner)) public tickets;
 
     constructor(address randomnessCeremonyAddress) {
         randomnessCeremony = RandomnessCeremony(payable(randomnessCeremonyAddress));
     }
+
+    // Public functions
 
     function createCeremony(
         uint commitmentDeadline,
@@ -62,20 +64,32 @@ contract LottoCeremony is Ownable {
         randomnessCeremony.reveal(ceremonies[ceremonyId].randomnessCeremonyId, hashedValue, secretValue);
     }
 
-    function claimSlashedETH(uint randomnessCeremonyId, bytes32 hashedValue) public /** Slashed eth nao wat */  {
-        randomnessCeremony.claimSlashedETH(randomnessCeremonyId, hashedValue);
-    }
-
     function claim(uint ceremonyId) public {
         Ceremony memory ceremony = ceremonies[ceremonyId];
         require(!ceremony.isClaimed, "Already claimed");
         ceremony.isClaimed = true;
-        uint randomness = uint(randomnessCeremony.getRandomness(ceremonyId));
-        uint randomTicket = randomness % ceremony.ticketCount;
-        address winner = tickets[ceremonyId][randomTicket];
+        address winner = getWinner(ceremonyId);
         sendETH(
             payable(winner),
             ceremony.ticketPrice * ceremony.ticketCount
         );
+    }
+
+    // Creator functions
+
+    function claimSlashedETH(uint randomnessCeremonyId, bytes32 hashedValue) public /** Slashed eth nao wat */  {
+        randomnessCeremony.claimSlashedETH(randomnessCeremonyId, hashedValue);
+    }
+
+    // View functions
+
+    function getWinner(uint ceremonyId) public view returns(address){
+        uint randomness = uint(getRandomness(ceremonyId));
+        uint randomTicket = randomness % ceremonies[ceremonyId].ticketCount;
+        return tickets[ceremonyId][randomTicket];
+    }
+
+    function getRandomness(uint ceremonyId) public view returns(uint) {
+        return uint(randomnessCeremony.getRandomness(ceremonyId));
     }
 }
