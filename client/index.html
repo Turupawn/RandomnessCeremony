@@ -20,10 +20,14 @@
   <p>Secret</p>
   <input type="input"  value="" id="_secretReveal"></input>
   <input type="button" value="Reveal" onclick="_reveal()"></input>
-  <h2>Claim</h2>
+  <h2>Claim ETH</h2>
   <p>Ceremony Id</p>
-  <input type="input"  value="" id="_ceremonyIdClaim"></input>
-  <input type="button" value="Claim" onclick="_claim()"></input>
+  <input type="input"  value="" id="_ceremonyIdClaimETH"></input>
+  <input type="button" value="Claim" onclick="_claimETH()"></input>
+  <h2>Claim NFT</h2>
+  <p>Ceremony Id</p>
+  <input type="input"  value="" id="_ceremonyIdClaimNFT"></input>
+  <input type="button" value="Claim" onclick="_claimNFT()"></input>
   <h2>Queries</h2>
   <h3>Get Ceremony</h3>
   <p>Ceremony Id</p>
@@ -76,10 +80,16 @@
     reveal(_ceremonyIdReveal, hashedValue, _secretReveal)
   }
 
-  function _claim()
+  function _claimETH()
   {
-    _ceremonyIdClaim = document.getElementById("_ceremonyIdClaim").value
-    claim(_ceremonyIdClaim)
+    _ceremonyIdClaimETH = document.getElementById("_ceremonyIdClaimETH").value
+    claim(_ceremonyIdClaimETH)
+  }
+
+  function _claimNFT()
+  {
+    _ceremonyIdClaimNFT = document.getElementById("_ceremonyIdClaimNFT").value
+    claim(_ceremonyIdClaimNFT)
   }
 
   function _getCeremony()

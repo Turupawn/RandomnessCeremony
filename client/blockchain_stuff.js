@@ -183,8 +183,21 @@ const reveal = async (ceremonyId, hashedValue, secretValue) => {
   });
 }
 
-const createCeremony = async (commitmentDeadline, revealDeadline, ticketPrice, stakeAmount) => {
-  const result = await my_contract.methods.createCeremony(commitmentDeadline, revealDeadline, ticketPrice, stakeAmount)
+const createCeremony = async (
+  commitmentDeadline,
+  revealDeadline,
+  ticketPrice,
+  stakeAmount,
+  nftContractAddress,
+  nftID
+  ) => {
+  const result = await my_contract.methods.createCeremony(
+    commitmentDeadline,
+    revealDeadline,
+    ticketPrice,
+    stakeAmount,
+    nftContractAddress,
+    nftID)
   .send({ from: accounts[0], gas: 0, value: 0 })
   .on('transactionHash', function(hash){
     document.getElementById("web3_message").textContent="Executing...";
@@ -196,8 +209,21 @@ const createCeremony = async (commitmentDeadline, revealDeadline, ticketPrice, s
   });
 }
 
-const claim = async (ceremonyId) => {
-  const result = await my_contract.methods.claim(ceremonyId)
+const claimETH = async (ceremonyId) => {
+  const result = await my_contract.methods.claimETH(ceremonyId)
+  .send({ from: accounts[0], gas: 0, value: 0 })
+  .on('transactionHash', function(hash){
+    document.getElementById("web3_message").textContent="Executing...";
+  })
+  .on('receipt', function(receipt){
+    document.getElementById("web3_message").textContent="Success.";    })
+  .catch((revertReason) => {
+    console.log("ERROR! Transaction reverted: " + revertReason.receipt.transactionHash)
+  });
+}
+
+const claimNFT = async (ceremonyId) => {
+  const result = await my_contract.methods.claimNFT(ceremonyId)
   .send({ from: accounts[0], gas: 0, value: 0 })
   .on('transactionHash', function(hash){
     document.getElementById("web3_message").textContent="Executing...";
