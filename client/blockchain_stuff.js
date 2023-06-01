@@ -1,6 +1,6 @@
 const NETWORK_ID = 534353
 
-const MY_CONTRACT_ADDRESS = "0x7CC913737c1B6A38C5b7f77Ed85937C306a2bf52"
+const MY_CONTRACT_ADDRESS = "0xB5c306f5d30242509CB25682D5167d24A696C5d6"
 const MY_CONTRACT_ABI_PATH = "./json_abi/LottoCeremony.json"
 var my_contract
 
@@ -143,10 +143,19 @@ async function getTicket(ceremonyIdGetTicket, ticketIdGetTicket)
 
 async function getWinner(ceremonyIdGetWinner)
 {
-  var winner = await my_contract.methods.getWinner(ceremonyIdGetWinner).call()
+  var winner0 = await my_contract.methods.getWinner(ceremonyIdGetWinner, 0).call()
+  var winner1 = await my_contract.methods.getWinner(ceremonyIdGetWinner, 1).call()
+  var winner2 = await my_contract.methods.getWinner(ceremonyIdGetWinner, 2).call()
+  console.log(winner0)
+  console.log(winner1)
+  console.log(winner2)
   var getRandomness = await my_contract.methods.getRandomness(ceremonyIdGetWinner).call()
 
-  document.getElementById("get_winner_text").textContent = " winner: "+ winner
+  console.log(getRandomness)
+
+  document.getElementById("get_winner_text").textContent = " ETH Winner: "+ winner0
+    + " NFT Winner: "+ winner1
+    + " Has to pay beer: "+ winner2
     + " getRandomness: "+ getRandomness
 }
 
@@ -154,8 +163,8 @@ async function getWinner(ceremonyIdGetWinner)
 
 const commit = async (ceremonyId, hashedValue) => {
   var ceremony = await my_contract.methods.ceremonies(ceremonyId).call()
-  var ticketPrice = ceremony[3]
-  var stakeAmount = ceremony[4]
+  var ticketPrice = ceremony[4]
+  var stakeAmount = ceremony[5]
   var valueSent = parseInt(ticketPrice) + parseInt(stakeAmount)
 
   const result = await my_contract.methods.commit(accounts[0], ceremonyId, hashedValue)

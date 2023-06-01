@@ -22,3 +22,12 @@ Randomness Ceremony
 Lotto Ceremony
 0x7CC913737c1B6A38C5b7f77Ed85937C306a2bf52
 ```
+
+# Scroll Deploy #2
+
+```
+RandomnessCeremony
+0x51edf319BfE3b522D00bD3Da3DdF05A58b3eb532
+LottoAndNFTCeremony
+0xB5c306f5d30242509CB25682D5167d24A696C5d6
+```

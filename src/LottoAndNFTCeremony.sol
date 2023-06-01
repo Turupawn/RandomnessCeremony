@@ -49,7 +49,7 @@ contract LottoAndNFTCeremony is Ownable {
             commitmentDeadline,
             revealDeadline,
             stakeAmount);
-        IERC721(nftContractAddress).transferFrom(msg.sender, address(this), 0);
+        IERC721(nftContractAddress).transferFrom(msg.sender, address(this), nftID);
         ceremonies[ceremonyCount.current()] = Ceremony(
             randomnessCeremonyId,
             false,
@@ -90,7 +90,7 @@ contract LottoAndNFTCeremony is Ownable {
         require(!ceremony.isNFTClaimed, "Already claimed");
         ceremony.isNFTClaimed = true;
         address winner = getWinner(ceremonyId, WinnerType.NFTWinner);
-        IERC721(ceremony.nftContractAddress).transferFrom(address(this), winner, 0);
+        IERC721(ceremony.nftContractAddress).transferFrom(address(this), winner, ceremony.nftID);
     }
 
     // Creator functions

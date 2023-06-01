@@ -46,7 +46,12 @@
       },
       {
         "internalType": "bool",
-        "name": "isClaimed",
+        "name": "isETHClaimed",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "isNFTClaimed",
         "type": "bool"
       },
       {
@@ -62,6 +67,16 @@
       {
         "internalType": "uint256",
         "name": "stakeAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "nftContractAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "nftID",
         "type": "uint256"
       }
     ],
@@ -89,7 +104,20 @@
         "type": "uint256"
       }
     ],
-    "name": "claim",
+    "name": "claimETH",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "ceremonyId",
+        "type": "uint256"
+      }
+    ],
+    "name": "claimNFT",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -156,6 +184,16 @@
         "internalType": "uint256",
         "name": "stakeAmount",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "nftContractAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "nftID",
+        "type": "uint256"
       }
     ],
     "name": "createCeremony",
@@ -188,6 +226,11 @@
         "internalType": "uint256",
         "name": "ceremonyId",
         "type": "uint256"
+      },
+      {
+        "internalType": "enum LottoAndNFTCeremony.WinnerType",
+        "name": "winnerType",
+        "type": "uint8"
       }
     ],
     "name": "getWinner",
