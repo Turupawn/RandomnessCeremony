@@ -17,10 +17,18 @@
   <input type="input"  value="" id="_ticketPrice"></input>
   <p>Stake Amount</p>
   <input type="input"  value="" id="_stakeAmount"></input>
-  <p>NFT Contract Address</p>
-  <input type="input"  value="" id="_nftContractAddress"></input>
   <p>NFT ID</p>
   <input type="input"  value="" id="_nftID"></input>
+  <p>NFT Contract Address</p>
+  <input type="input"  value="" id="_nftContractAddress"></input>
+  <p>NFT Creator Address</p>
+  <input type="input"  value="" id="_nftCreatorAddress"></input>
+  <p>Protocol Address</p>
+  <input type="input"  value="" id="_protocolAddress"></input>
+  <p>NFT Creator ETH Percentage</p>
+  <input type="input"  value="" id="_nftCreatorETHPercentage"></input>
+  <p>Protocol ETH Percentage</p>
+  <input type="input"  value="" id="_protocolETHPercentage"></input>
   <br>
   <input type="button" value="Create Ceremony" onclick="_createCeremony()"></input>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.5/web3.min.js"></script>
@@ -35,8 +43,23 @@
     _revealDeadline = document.getElementById("_revealDeadline").value
     _ticketPrice = document.getElementById("_ticketPrice").value
     _stakeAmount = document.getElementById("_stakeAmount").value
-    _nftContractAddress = document.getElementById("_nftContractAddress").value
     _nftID = document.getElementById("_nftID").value
-    createCeremony(_commitmentDeadline, _revealDeadline, web3.utils.toWei(_ticketPrice, 'ether'), web3.utils.toWei(_stakeAmount, 'ether'), _nftContractAddress, _nftID)
+    _nftContractAddress = document.getElementById("_nftContractAddress").value
+    _nftCreatorAddress = document.getElementById("_nftCreatorAddress").value
+    _protocolAddress = document.getElementById("_protocolAddress").value
+    _nftCreatorETHPercentage = document.getElementById("_nftCreatorETHPercentage").value
+    _protocolETHPercentage = document.getElementById("_protocolETHPercentage").value
+    createCeremony(
+      _commitmentDeadline,
+      _revealDeadline,
+      web3.utils.toWei(_ticketPrice, 'ether'),
+      web3.utils.toWei(_stakeAmount, 'ether'),
+      _nftID,
+      _nftContractAddress,
+      _nftCreatorAddress,
+      _protocolAddress,
+      _nftCreatorETHPercentage,
+      _protocolETHPercentage
+      )
   }
 </script>

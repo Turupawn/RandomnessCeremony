@@ -46,12 +46,22 @@
       },
       {
         "internalType": "bool",
+        "name": "isNFTClaimed",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
         "name": "isETHClaimed",
         "type": "bool"
       },
       {
         "internalType": "bool",
-        "name": "isNFTClaimed",
+        "name": "isNFTCreatorETHClaimed",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "isProtocolETHClaimed",
         "type": "bool"
       },
       {
@@ -70,14 +80,46 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "nftID",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
         "name": "nftContractAddress",
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "nftID",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "nftCreatorAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "protocolAddress",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "lottoETHPercentage",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "nftCreatorETHPercentage",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "protocolETHPercentage",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct LottoAndNFTCeremony.Percentages",
+        "name": "percentages",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -118,6 +160,32 @@
       }
     ],
     "name": "claimNFT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "ceremonyId",
+        "type": "uint256"
+      }
+    ],
+    "name": "claimNFTCreatorETH",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "ceremonyId",
+        "type": "uint256"
+      }
+    ],
+    "name": "claimProtocolETH",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -186,13 +254,33 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "nftID",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
         "name": "nftContractAddress",
         "type": "address"
       },
       {
+        "internalType": "address",
+        "name": "nftCreatorAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "protocolAddress",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
-        "name": "nftID",
+        "name": "nftCreatorETHPercentage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "protocolETHPercentage",
         "type": "uint256"
       }
     ],

@@ -1,6 +1,6 @@
 const NETWORK_ID = 534353
 
-const MY_CONTRACT_ADDRESS = "0xB5c306f5d30242509CB25682D5167d24A696C5d6"
+const MY_CONTRACT_ADDRESS = "0xAFA608EE347DeA1E1D3D299fB29839d1CE85AC20"
 const MY_CONTRACT_ABI_PATH = "./json_abi/LottoCeremony.json"
 var my_contract
 
@@ -197,16 +197,24 @@ const createCeremony = async (
   revealDeadline,
   ticketPrice,
   stakeAmount,
+  nftID,
   nftContractAddress,
-  nftID
+  nftCreatorAddress,
+  protocolAddress,
+  nftCreatorETHPercentage,
+  protocolETHPercentage
   ) => {
   const result = await my_contract.methods.createCeremony(
     commitmentDeadline,
     revealDeadline,
     ticketPrice,
     stakeAmount,
+    nftID,
     nftContractAddress,
-    nftID)
+    nftCreatorAddress,
+    protocolAddress,
+    nftCreatorETHPercentage,
+    protocolETHPercentage)
   .send({ from: accounts[0], gas: 0, value: 0 })
   .on('transactionHash', function(hash){
     document.getElementById("web3_message").textContent="Executing...";
@@ -220,6 +228,32 @@ const createCeremony = async (
 
 const claimETH = async (ceremonyId) => {
   const result = await my_contract.methods.claimETH(ceremonyId)
+  .send({ from: accounts[0], gas: 0, value: 0 })
+  .on('transactionHash', function(hash){
+    document.getElementById("web3_message").textContent="Executing...";
+  })
+  .on('receipt', function(receipt){
+    document.getElementById("web3_message").textContent="Success.";    })
+  .catch((revertReason) => {
+    console.log("ERROR! Transaction reverted: " + revertReason.receipt.transactionHash)
+  });
+}
+
+const claimNFTCreatorETH = async (ceremonyId) => {
+  const result = await my_contract.methods.claimNFTCreatorETH(ceremonyId)
+  .send({ from: accounts[0], gas: 0, value: 0 })
+  .on('transactionHash', function(hash){
+    document.getElementById("web3_message").textContent="Executing...";
+  })
+  .on('receipt', function(receipt){
+    document.getElementById("web3_message").textContent="Success.";    })
+  .catch((revertReason) => {
+    console.log("ERROR! Transaction reverted: " + revertReason.receipt.transactionHash)
+  });
+}
+
+const claimProtocolETH = async (ceremonyId) => {
+  const result = await my_contract.methods.claimProtocolETH(ceremonyId)
   .send({ from: accounts[0], gas: 0, value: 0 })
   .on('transactionHash', function(hash){
     document.getElementById("web3_message").textContent="Executing...";

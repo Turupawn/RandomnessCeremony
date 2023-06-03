@@ -24,6 +24,14 @@
   <p>Ceremony Id</p>
   <input type="input"  value="" id="_ceremonyIdClaimETH"></input>
   <input type="button" value="Claim" onclick="_claimETH()"></input>
+  <h2>Claim NFT Creator ETH</h2>
+  <p>Ceremony Id</p>
+  <input type="input"  value="" id="_ceremonyIdClaimNFTCreatorETH"></input>
+  <input type="button" value="Claim" onclick="_claimNFTCreatorETH()"></input>
+  <h2>Claim Protocol ETH</h2>
+  <p>Ceremony Id</p>
+  <input type="input"  value="" id="_ceremonyIdClaimProtocolETH"></input>
+  <input type="button" value="Claim" onclick="_claimProtocolETH()"></input>
   <h2>Claim NFT</h2>
   <p>Ceremony Id</p>
   <input type="input"  value="" id="_ceremonyIdClaimNFT"></input>
@@ -84,6 +92,18 @@
   {
     _ceremonyIdClaimETH = document.getElementById("_ceremonyIdClaimETH").value
     claimETH(_ceremonyIdClaimETH)
+  }
+
+  function _claimNFTCreatorETH()
+  {
+    _ceremonyIdClaimNFTCreatorETH = document.getElementById("_ceremonyIdClaimNFTCreatorETH").value
+    claimNFTCreatorETH(_ceremonyIdClaimETH)
+  }
+
+  function _claimProtocolETH()
+  {
+    _ceremonyIdClaimProtocolETH = document.getElementById("_ceremonyIdClaimProtocolETH").value
+    claimProtocolETH(_ceremonyIdClaimETH)
   }
 
   function _claimNFT()

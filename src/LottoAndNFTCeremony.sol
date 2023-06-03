@@ -19,13 +19,24 @@ contract LottoAndNFTCeremony is Ownable {
 
     struct Ceremony {
         uint randomnessCeremonyId;
-        bool isETHClaimed;
         bool isNFTClaimed;
+        bool isETHClaimed;
+        bool isNFTCreatorETHClaimed;
+        bool isProtocolETHClaimed;
         uint ticketCount;
         uint ticketPrice;
         uint stakeAmount;
-        address nftContractAddress;
         uint nftID;
+        address nftContractAddress;
+        address nftCreatorAddress;
+        address protocolAddress;
+        Percentages percentages;
+    }
+
+    struct Percentages {
+        uint lottoETHPercentage;
+        uint nftCreatorETHPercentage;
+        uint protocolETHPercentage;
     }
 
     Counters.Counter public ceremonyCount;
@@ -43,22 +54,37 @@ contract LottoAndNFTCeremony is Ownable {
         uint revealDeadline,
         uint ticketPrice,
         uint stakeAmount,
+        uint nftID,
         address nftContractAddress,
-        uint nftID) public {
+        address nftCreatorAddress,
+        address protocolAddress,
+        uint nftCreatorETHPercentage,
+        uint protocolETHPercentage) public {
         uint randomnessCeremonyId = randomnessCeremony.generateRandomness(
             commitmentDeadline,
             revealDeadline,
             stakeAmount);
         IERC721(nftContractAddress).transferFrom(msg.sender, address(this), nftID);
+        uint lottoETHPercentage = 10000 - nftCreatorETHPercentage - protocolETHPercentage;
         ceremonies[ceremonyCount.current()] = Ceremony(
             randomnessCeremonyId,
+            false,
+            false,
             false,
             false,
             0,
             ticketPrice,
             stakeAmount,
+            nftID,
             nftContractAddress,
-            nftID);
+            nftCreatorAddress,
+            protocolAddress,
+            Percentages(
+                lottoETHPercentage,
+                nftCreatorETHPercentage,
+                protocolETHPercentage
+                )
+            );
         ceremonyCount.increment();
     }
 
@@ -79,9 +105,34 @@ contract LottoAndNFTCeremony is Ownable {
         require(!ceremony.isETHClaimed, "Already claimed");
         ceremony.isETHClaimed = true;
         address winner = getWinner(ceremonyId, WinnerType.ETHWinner);
+        uint lottoETHPercentage = ceremony.percentages.lottoETHPercentage;
         sendETH(
             payable(winner),
-            ceremony.ticketPrice * ceremony.ticketCount
+            (ceremony.ticketPrice * ceremony.ticketCount) * lottoETHPercentage / 10000
+        );
+    }
+
+    function claimNFTCreatorETH(uint ceremonyId) public {
+        Ceremony memory ceremony = ceremonies[ceremonyId];
+        require(!ceremony.isNFTCreatorETHClaimed, "Already claimed");
+        ceremony.isNFTCreatorETHClaimed = true;
+        address nftCreatorAddress = ceremony.nftCreatorAddress;
+        uint nftCreatorETHPercentage = ceremony.percentages.nftCreatorETHPercentage;
+        sendETH(
+            payable(nftCreatorAddress),
+            (ceremony.ticketPrice * ceremony.ticketCount) * nftCreatorETHPercentage / 10000
+        );
+    }
+
+    function claimProtocolETH(uint ceremonyId) public {
+        Ceremony memory ceremony = ceremonies[ceremonyId];
+        require(!ceremony.isProtocolETHClaimed, "Already claimed");
+        ceremony.isProtocolETHClaimed = true;
+        address protocolAddress = ceremony.protocolAddress;
+        uint protocolETHPercentage = ceremony.percentages.protocolETHPercentage;
+        sendETH(
+            payable(protocolAddress),
+            (ceremony.ticketPrice * ceremony.ticketCount) * protocolETHPercentage / 10000
         );
     }
 

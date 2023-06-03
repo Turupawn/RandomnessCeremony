@@ -34,8 +34,12 @@ contract LottoAndNFTCeremonyTest is Test {
             revealDeadline,
             ticketPrice,
             stakeAmount,
+            0,
             address(mockNFT),
-            0);
+            address(user1),
+            address(user2),
+            2500,
+            500);
         
         // Now we hash 3 secrets
         bytes32 secret1 = "secret1";
