@@ -1,6 +1,6 @@
-const NETWORK_ID = 534353
+const NETWORK_ID = 10
 
-const MY_CONTRACT_ADDRESS = "0xAFA608EE347DeA1E1D3D299fB29839d1CE85AC20"
+const MY_CONTRACT_ADDRESS = "0xa5e742b4aCCD558F2D17555E4387099f6D4261cC"
 const MY_CONTRACT_ABI_PATH = "./json_abi/LottoCeremony.json"
 var my_contract
 
@@ -85,7 +85,7 @@ async function loadDapp() {
         };
         awaitContract();
       } else {
-        document.getElementById("web3_message").textContent="Please connect to Scroll Alpha";
+        document.getElementById("web3_message").textContent="Please connect to Optimism Mainnet";
       }
     });
   };
@@ -214,7 +214,8 @@ const createCeremony = async (
     nftCreatorAddress,
     protocolAddress,
     nftCreatorETHPercentage,
-    protocolETHPercentage)
+    protocolETHPercentage
+    )
   .send({ from: accounts[0], gas: 0, value: 0 })
   .on('transactionHash', function(hash){
     document.getElementById("web3_message").textContent="Executing...";
