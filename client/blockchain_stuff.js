@@ -163,8 +163,8 @@ async function getWinner(ceremonyIdGetWinner)
 
 const commit = async (ceremonyId, hashedValue) => {
   var ceremony = await my_contract.methods.ceremonies(ceremonyId).call()
-  var ticketPrice = ceremony[4]
-  var stakeAmount = ceremony[5]
+  var ticketPrice = ceremony[6]
+  var stakeAmount = ceremony[7]
   var valueSent = parseInt(ticketPrice) + parseInt(stakeAmount)
 
   const result = await my_contract.methods.commit(accounts[0], ceremonyId, hashedValue)

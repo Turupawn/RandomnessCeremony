@@ -41,3 +41,12 @@ Randomness Ceremony
 LottoAndNFTCeremony
 0xa5e742b4aCCD558F2D17555E4387099f6D4261cC
 ```
+
+# Scroll Panic Deploy #4
+
+```
+randomness ceremony
+0xC2451743B0a390dE0aA933dc7feFE77c71a34B3f
+LottoAndNFTCeremony
+0x5b7567008AAf40dd7fEF0B6fD92Cd77719A1B438
+```
