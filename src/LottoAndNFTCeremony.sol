@@ -89,10 +89,9 @@ contract LottoAndNFTCeremony is Ownable {
     }
 
     function commit(address commiter, uint ceremonyId, bytes32 hashedValue) public payable {
-        Ceremony memory ceremony = ceremonies[ceremonyId];
-        require(msg.value == ceremony.ticketPrice + ceremony.stakeAmount);
-        randomnessCeremony.commit{value: ceremony.stakeAmount}(commiter, ceremony.randomnessCeremonyId, hashedValue);
-        tickets[ceremonyId][ceremony.ticketCount] = commiter;
+        require(msg.value == ceremonies[ceremonyId].ticketPrice + ceremonies[ceremonyId].stakeAmount);
+        randomnessCeremony.commit{value: ceremonies[ceremonyId].stakeAmount}(commiter, ceremonies[ceremonyId].randomnessCeremonyId, hashedValue);
+        tickets[ceremonyId][ceremonies[ceremonyId].ticketCount] = commiter;
         ceremonies[ceremonyId].ticketCount += 1;
     }
 
@@ -101,47 +100,43 @@ contract LottoAndNFTCeremony is Ownable {
     }
 
     function claimETH(uint ceremonyId) public {
-        Ceremony memory ceremony = ceremonies[ceremonyId];
-        require(!ceremony.isETHClaimed, "Already claimed");
-        ceremony.isETHClaimed = true;
+        require(!ceremonies[ceremonyId].isETHClaimed, "Already claimed");
+        ceremonies[ceremonyId].isETHClaimed = true;
         address winner = getWinner(ceremonyId, WinnerType.ETHWinner);
-        uint lottoETHPercentage = ceremony.percentages.lottoETHPercentage;
+        uint lottoETHPercentage = ceremonies[ceremonyId].percentages.lottoETHPercentage;
         sendETH(
             payable(winner),
-            (ceremony.ticketPrice * ceremony.ticketCount) * lottoETHPercentage / 10000
+            (ceremonies[ceremonyId].ticketPrice * ceremonies[ceremonyId].ticketCount) * lottoETHPercentage / 10000
         );
     }
 
     function claimNFTCreatorETH(uint ceremonyId) public {
-        Ceremony memory ceremony = ceremonies[ceremonyId];
-        require(!ceremony.isNFTCreatorETHClaimed, "Already claimed");
-        ceremony.isNFTCreatorETHClaimed = true;
-        address nftCreatorAddress = ceremony.nftCreatorAddress;
-        uint nftCreatorETHPercentage = ceremony.percentages.nftCreatorETHPercentage;
+        require(!ceremonies[ceremonyId].isNFTCreatorETHClaimed, "Already claimed");
+        ceremonies[ceremonyId].isNFTCreatorETHClaimed = true;
+        address nftCreatorAddress = ceremonies[ceremonyId].nftCreatorAddress;
+        uint nftCreatorETHPercentage = ceremonies[ceremonyId].percentages.nftCreatorETHPercentage;
         sendETH(
             payable(nftCreatorAddress),
-            (ceremony.ticketPrice * ceremony.ticketCount) * nftCreatorETHPercentage / 10000
+            (ceremonies[ceremonyId].ticketPrice * ceremonies[ceremonyId].ticketCount) * nftCreatorETHPercentage / 10000
         );
     }
 
     function claimProtocolETH(uint ceremonyId) public {
-        Ceremony memory ceremony = ceremonies[ceremonyId];
-        require(!ceremony.isProtocolETHClaimed, "Already claimed");
-        ceremony.isProtocolETHClaimed = true;
-        address protocolAddress = ceremony.protocolAddress;
-        uint protocolETHPercentage = ceremony.percentages.protocolETHPercentage;
+        require(!ceremonies[ceremonyId].isProtocolETHClaimed, "Already claimed");
+        ceremonies[ceremonyId].isProtocolETHClaimed = true;
+        address protocolAddress = ceremonies[ceremonyId].protocolAddress;
+        uint protocolETHPercentage = ceremonies[ceremonyId].percentages.protocolETHPercentage;
         sendETH(
             payable(protocolAddress),
-            (ceremony.ticketPrice * ceremony.ticketCount) * protocolETHPercentage / 10000
+            (ceremonies[ceremonyId].ticketPrice * ceremonies[ceremonyId].ticketCount) * protocolETHPercentage / 10000
         );
     }
 
     function claimNFT(uint ceremonyId) public {
-        Ceremony memory ceremony = ceremonies[ceremonyId];
-        require(!ceremony.isNFTClaimed, "Already claimed");
-        ceremony.isNFTClaimed = true;
+        require(!ceremonies[ceremonyId].isNFTClaimed, "Already claimed");
+        ceremonies[ceremonyId].isNFTClaimed = true;
         address winner = getWinner(ceremonyId, WinnerType.NFTWinner);
-        IERC721(ceremony.nftContractAddress).transferFrom(address(this), winner, ceremony.nftID);
+        IERC721(ceremonies[ceremonyId].nftContractAddress).transferFrom(address(this), winner, ceremonies[ceremonyId].nftID);
     }
 
     // Creator functions
