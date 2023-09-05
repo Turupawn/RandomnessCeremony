@@ -146,8 +146,8 @@ contract LottoAndNFTCeremony is Ownable {
 
     // Creator functions
 
-    function claimSlashedETH(uint randomnessCeremonyId, bytes32 hashedValue) public /** Slashed eth nao wat */  {
-        randomnessCeremony.claimSlashedETH(randomnessCeremonyId, hashedValue);
+    function claimSlashedETH(uint randomnessCeremonyId, bytes32 hashedValue, address to) public onlyOwner  {
+        randomnessCeremony.claimSlashedETH(randomnessCeremonyId, hashedValue, to);
     }
 
     // View functions
@@ -167,5 +167,10 @@ contract LottoAndNFTCeremony is Ownable {
 
     function getRandomness(uint ceremonyId) public view returns(uint) {
         return uint(randomnessCeremony.getRandomness(ceremonyId));
+    }
+
+    fallback() external payable {
+    }
+    receive() external payable { 
     }
 }

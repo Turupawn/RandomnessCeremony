@@ -80,13 +80,13 @@ contract RandomnessCeremony {
         return randomnessId;
     }
 
-    function claimSlashedETH(uint randomnessId, bytes32 hashedValue) public {
+    function claimSlashedETH(uint randomnessId, bytes32 hashedValue, address to) public {
         require(randomness[randomnessId].creator == msg.sender, "Only creator can claim slashed");
         require(block.timestamp > randomness[randomnessId].revealDeadline, "Slashing period has not happened yet");
         require(commitments[randomnessId][hashedValue].state == CommitmentState.Committed, "This commitment was not slashed");
         commitments[randomnessId][hashedValue].state = CommitmentState.Slashed;
         sendETH(
-            payable(msg.sender),
+            payable(to),
             randomness[randomnessId].stakeAmount
         );
     }
