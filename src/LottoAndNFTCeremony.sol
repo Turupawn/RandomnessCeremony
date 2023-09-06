@@ -158,7 +158,7 @@ contract LottoAndNFTCeremony is Ownable {
 
     function getWinner(uint ceremonyId, WinnerType winnerType) public view returns(address) {
         uint randomness = uint(getRandomness(ceremonyId));
-        uint randomTicket = FeistelShuffleOptimised.shuffle(
+        uint randomTicket = FeistelShuffleOptimised.deshuffle(
             uint(winnerType),
             ceremonies[ceremonyId].ticketCount,
             randomness,
