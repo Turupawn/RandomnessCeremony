@@ -1,13 +1,14 @@
-# 🚀 How to deploy
+# Deployment and verification
 
-## 🚀 Contract deployment
+## 🚀 How to deploy
 
 ```
 forge create --rpc-url RPCURL --private-key PRIVATEKEYHERE src/RandomnessCeremony.sol:RandomnessCeremony
+
 forge create --rpc-url RPCURL --private-key PRIVATEKEYHERE  src/LottoAndNFTCeremony.sol:LottoAndNFTCeremony --constructor-args "0xRANDOMNESSCEREMONYADDRESS"
 ```
 
-## Contract Verification
+## ✅ How to verify on Optimistic Etherscan
 
 ```
 ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY forge verify-contract YOUR_RANDOMNESS_CEREMONY_ADDRESS src/RandomnessCeremony.sol:RandomnessCeremony --chain-id 10 --verifier-url https://api-optimistic.etherscan.io/api --verifier etherscan
