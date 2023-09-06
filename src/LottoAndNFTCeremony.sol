@@ -5,11 +5,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./RandomnessCeremony.sol";
+import "./FeistelShuffleOptimised.sol";
 
 contract LottoAndNFTCeremony is Ownable {
 
     using Counters for Counters.Counter;
     RandomnessCeremony public randomnessCeremony;
+
+    uint public feistelRounds = 4;
 
     function sendETH(address payable _to, uint amount) internal {
         (bool sent, bytes memory data) = _to.call{value: amount}("");
@@ -155,8 +158,12 @@ contract LottoAndNFTCeremony is Ownable {
 
     function getWinner(uint ceremonyId, WinnerType winnerType) public view returns(address) {
         uint randomness = uint(getRandomness(ceremonyId));
-        uint winnerRandomness = uint(keccak256(abi.encode(randomness, winnerType)));
-        uint randomTicket = winnerRandomness % ceremonies[ceremonyId].ticketCount;
+        uint randomTicket = FeistelShuffleOptimised.shuffle(
+            uint(winnerType),
+            ceremonies[ceremonyId].ticketCount,
+            randomness,
+            feistelRounds
+            );
         return tickets[ceremonyId][randomTicket];
     }
 
