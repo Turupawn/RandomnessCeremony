@@ -201,6 +201,11 @@
         "internalType": "bytes32",
         "name": "hashedValue",
         "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
       }
     ],
     "name": "claimSlashedETH",

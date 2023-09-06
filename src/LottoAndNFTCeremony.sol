@@ -163,9 +163,4 @@ contract LottoAndNFTCeremony is Ownable {
     function getRandomness(uint ceremonyId) public view returns(uint) {
         return uint(randomnessCeremony.getRandomness(ceremonyId));
     }
-
-    fallback() external payable {
-    }
-    receive() external payable { 
-    }
 }
