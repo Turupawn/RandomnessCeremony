@@ -1,3 +1,5 @@
+![test workflow](https://github.com/Turupawn/RandomnessCeremony/actions/workflows/test.yml/badge.svg)
+
 # Deployment and verification
 
 ## 🚀 How to deploy
