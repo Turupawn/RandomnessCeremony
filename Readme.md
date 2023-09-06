@@ -1,13 +1,23 @@
 # 🚀 How to deploy
 
+## 🚀 Contract deployment
+
 ```
 forge create --rpc-url RPCURL --private-key PRIVATEKEYHERE src/RandomnessCeremony.sol:RandomnessCeremony
 forge create --rpc-url RPCURL --private-key PRIVATEKEYHERE  src/LottoAndNFTCeremony.sol:LottoAndNFTCeremony --constructor-args "0xRANDOMNESSCEREMONYADDRESS"
 ```
 
+## Contract Verification
+
+```
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY forge verify-contract YOUR_RANDOMNESS_CEREMONY_ADDRESS src/RandomnessCeremony.sol:RandomnessCeremony --chain-id 10 --verifier-url https://api-optimistic.etherscan.io/api --verifier etherscan
+
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY forge verify-contract YOUR_LOTTO_AND_NFT_CEREMONY src/LottoAndNFTCeremony.sol:LottoAndNFTCeremony --chain-id 10 --verifier-url https://api-optimistic.etherscan.io/api --verifier etherscan --constructor-args $(cast abi-encode "constructor(address)" "YOUR_RANDOMNESS_CEREMONY_ADDRESS")
+```
+
 # Optimism Mainnet Deploy
 
-## Legacy
+## Legacy (v0.1)
 
 ```
 Randomness Ceremony
@@ -16,7 +26,7 @@ LottoAndNFTCeremony
 0xa5e742b4aCCD558F2D17555E4387099f6D4261cC
 ```
 
-## Live
+## Live (v0.2)
 
 ```
 Randomness Ceremony
