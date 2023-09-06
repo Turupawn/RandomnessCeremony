@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
-import "openzeppelin-contracts/access/Ownable.sol";
-import "openzeppelin-contracts/utils/Counters.sol";
-import "openzeppelin-contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./RandomnessCeremony.sol";
 
 contract LottoAndNFTCeremony is Ownable {
