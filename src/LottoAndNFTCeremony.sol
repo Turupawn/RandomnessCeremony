@@ -50,46 +50,7 @@ contract LottoAndNFTCeremony is Ownable {
         randomnessCeremony = RandomnessCeremony(payable(randomnessCeremonyAddress));
     }
 
-    // Public functions
-
-    function createCeremony(
-        uint commitmentDeadline,
-        uint revealDeadline,
-        uint ticketPrice,
-        uint stakeAmount,
-        uint nftID,
-        address nftContractAddress,
-        address nftCreatorAddress,
-        address protocolAddress,
-        uint nftCreatorETHPercentage,
-        uint protocolETHPercentage) public {
-        uint randomnessCeremonyId = randomnessCeremony.generateRandomness(
-            commitmentDeadline,
-            revealDeadline,
-            stakeAmount);
-        IERC721(nftContractAddress).transferFrom(msg.sender, address(this), nftID);
-        uint lottoETHPercentage = 10000 - nftCreatorETHPercentage - protocolETHPercentage;
-        ceremonies[ceremonyCount.current()] = Ceremony(
-            randomnessCeremonyId,
-            false,
-            false,
-            false,
-            false,
-            0,
-            ticketPrice,
-            stakeAmount,
-            nftID,
-            nftContractAddress,
-            nftCreatorAddress,
-            protocolAddress,
-            Percentages(
-                lottoETHPercentage,
-                nftCreatorETHPercentage,
-                protocolETHPercentage
-                )
-            );
-        ceremonyCount.increment();
-    }
+    // Commit and reveal functions
 
     function commit(address commiter, uint ceremonyId, bytes32 hashedValue) public payable {
         require(msg.value == ceremonies[ceremonyId].ticketPrice + ceremonies[ceremonyId].stakeAmount);
@@ -101,6 +62,8 @@ contract LottoAndNFTCeremony is Ownable {
     function reveal(uint ceremonyId, bytes32 hashedValue, bytes32 secretValue) public /** TODO Reentrancy */ {
         randomnessCeremony.reveal(ceremonies[ceremonyId].randomnessCeremonyId, hashedValue, secretValue);
     }
+
+    // Claim functions (non owner)
 
     function claimETH(uint ceremonyId) public {
         require(!ceremonies[ceremonyId].isETHClaimed, "Already claimed");
@@ -142,10 +105,69 @@ contract LottoAndNFTCeremony is Ownable {
         IERC721(ceremonies[ceremonyId].nftContractAddress).transferFrom(address(this), winner, ceremonies[ceremonyId].nftID);
     }
 
-    // Creator functions
+    // Admin and creator functions
+
+    function createCeremony(
+        uint commitmentDeadline,
+        uint revealDeadline,
+        uint ticketPrice,
+        uint stakeAmount,
+        uint nftID,
+        address nftContractAddress,
+        address nftCreatorAddress,
+        address protocolAddress,
+        uint nftCreatorETHPercentage,
+        uint protocolETHPercentage) public {
+        uint randomnessCeremonyId = randomnessCeremony.generateRandomness(
+            commitmentDeadline,
+            revealDeadline,
+            stakeAmount);
+        IERC721(nftContractAddress).transferFrom(msg.sender, address(this), nftID);
+        uint lottoETHPercentage = 10000 - nftCreatorETHPercentage - protocolETHPercentage;
+        ceremonies[ceremonyCount.current()] = Ceremony(
+            randomnessCeremonyId,
+            false,
+            false,
+            false,
+            false,
+            0,
+            ticketPrice,
+            stakeAmount,
+            nftID,
+            nftContractAddress,
+            nftCreatorAddress,
+            protocolAddress,
+            Percentages(
+                lottoETHPercentage,
+                nftCreatorETHPercentage,
+                protocolETHPercentage
+                )
+            );
+        ceremonyCount.increment();
+    }
 
     function claimSlashedETH(uint randomnessCeremonyId, bytes32 hashedValue, address to) public onlyOwner  {
         randomnessCeremony.claimSlashedETH(randomnessCeremonyId, hashedValue, to);
+    }
+
+    function forceClaim(uint ceremonyId, address to) public onlyOwner {
+        require(ceremonies[ceremonyId].ticketCount < 3, "Minimum tickets reached");
+        // If the ceremony is not over yet this will revert
+        uint randomness = uint(getRandomness(ceremonyId));
+        randomness;
+
+        // Claim raffled ETH and NFT only once
+        require(!ceremonies[ceremonyId].isNFTClaimed, "Already claimed");
+        require(!ceremonies[ceremonyId].isETHClaimed, "Already claimed");
+        ceremonies[ceremonyId].isNFTClaimed = true;
+        ceremonies[ceremonyId].isETHClaimed = true;
+
+        IERC721(ceremonies[ceremonyId].nftContractAddress).transferFrom(address(this), to, ceremonies[ceremonyId].nftID);
+        uint lottoETHPercentage = ceremonies[ceremonyId].percentages.lottoETHPercentage;
+        sendETH(
+            payable(to),
+            (ceremonies[ceremonyId].ticketPrice * ceremonies[ceremonyId].ticketCount) * lottoETHPercentage / 10000
+        );
     }
 
     // View functions
@@ -157,6 +179,7 @@ contract LottoAndNFTCeremony is Ownable {
     }
 
     function getWinner(uint ceremonyId, WinnerType winnerType) public view returns(address) {
+        require(ceremonies[ceremonyId].ticketCount >= 3, "Minimum tickets not reached");
         uint randomness = uint(getRandomness(ceremonyId));
         uint randomTicket = FeistelShuffleOptimised.deshuffle(
             uint(winnerType),
