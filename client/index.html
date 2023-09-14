@@ -51,7 +51,7 @@ input[type="button"] {
 
 /* Style the Connect button */
 #connect_button {
-  display: block;
+  display: none;
   background-color: #4caf50;
   color: white;
   cursor: pointer;
@@ -62,17 +62,10 @@ p:first-of-type {
   font-weight: bold;
 }
 
-/* Style the hidden elements */
-#account_address,
-#web3_message,
-#contract_state {
-  display: none;
-}
-
   </style>
 </head>
 <body>
-  <input id="connect_button" type="button" value="Connect" onclick="connectWallet()" style="display: none"></input>
+  <input id="connect_button" type="button" value="Connect" onclick="connectWallet()"></input>
   <p>v0.2.18</p>
   <p id="account_address" style="display: none"></p>
   <p id="web3_message"></p>
