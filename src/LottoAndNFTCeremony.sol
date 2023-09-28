@@ -193,4 +193,15 @@ contract LottoAndNFTCeremony is Ownable {
     function getRandomness(uint ceremonyId) public view returns(uint) {
         return uint(randomnessCeremony.getRandomness(ceremonyId));
     }
+     function getTimerCommit(uint ceremonyId) public view returns(uint) {
+        uint randomnessCeremonyId =  randomness[ceremonyId].randomnessCeremonyId;
+        uint time = randomnessCeremony.getTimerCommit(ceremonyId);
+        return time;
+    }
+     function getTimerReveal(uint ceremonyId) public view returns(uint) {
+        uint randomnessCeremonyId =  randomness[ceremonyId].randomnessCeremonyId;
+        uint time = randomnessCeremony.getTimerReveal(ceremonyId);
+        return time;
+    }
+
 }
