@@ -90,4 +90,11 @@ contract RandomnessCeremony {
             randomness[randomnessId].stakeAmount
         );
     }
+  function getTimerReveal(uint ceremonyId) public view returns(uint) {
+        return randomness[ceremonyId].revealDeadline;
+    }
+  function getTimerCommit(uint ceremonyId) public view returns(uint) {
+        return randomness[ceremonyId].commitmentDeadline;
+    }
+   
 }
