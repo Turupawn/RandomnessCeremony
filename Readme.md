@@ -37,3 +37,14 @@ Randomness Ceremony
 LottoAndNFTCeremony
 0x10445fff1600AD3e38276EE3ec7CF7625D852687
 ```
+
+# ? Deploy
+
+## Live (v0.2)
+
+```
+Randomness Ceremony
+0xD9BcFd43E6BA76b1468D0a66325C0c06D6DACf33
+LottoAndNFTCeremony
+0x24EF68753793b732972E83B67B70409D4049A487
+```

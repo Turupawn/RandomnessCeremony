@@ -1,6 +1,6 @@
-const NETWORK_ID = 10
+const NETWORK_ID = 534352
 
-const MY_CONTRACT_ADDRESS = "0x10445fff1600AD3e38276EE3ec7CF7625D852687"
+const MY_CONTRACT_ADDRESS = "0x24EF68753793b732972E83B67B70409D4049A487"
 const MY_CONTRACT_ABI_PATH = "./json_abi/LottoCeremony.json"
 var my_contract
 
@@ -85,7 +85,7 @@ async function loadDapp() {
         };
         awaitContract();
       } else {
-        document.getElementById("web3_message").textContent="Please connect to Optimism Mainnet";
+        document.getElementById("web3_message").textContent="Please connect to ? Mainnet";
       }
     });
   };
